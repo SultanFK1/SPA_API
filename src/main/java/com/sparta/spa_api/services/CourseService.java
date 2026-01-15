@@ -42,8 +42,8 @@ public class CourseService {
         return courseRepository.findAll().stream().map(courseMapper::toDTO).toList();
     }
 
-    public CourseDTO getCourseById(String id) {
-        Course course = courseRepository.findById(Integer.valueOf(id))
+    public CourseDTO getCourseById(int id) {
+        Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Course not found"));
         return courseMapper.toDTO(course);
     }
@@ -55,13 +55,13 @@ public class CourseService {
         return courseMapper.toDTO(saved);
     }
 
-    public boolean deleteCourse(String id) {
-        if (courseRepository.existsById(Integer.valueOf(id))) {
-            courseRepository.deleteById(Integer.valueOf(id));
-            return true;
+    public void deleteCourse(int id) {
+        if (!courseRepository.existsById(id)) {
+            throw new NoSuchElementException("Course not found");
         }
-        return false;
+        courseRepository.deleteById(id);
     }
+
 
 
     public CourseDTO updateCourse(Integer courseId, CourseDTO courseDTO) {

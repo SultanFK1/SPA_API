@@ -63,8 +63,11 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-
-
+    @Operation(summary = "Get graduation status", description = "Check graduation status")
+    @GetMapping("/{id}/graduated")
+    public boolean hasGraduated(@PathVariable Integer id) {
+        return service.hasGraduated(id);
+    }
 
 
 }

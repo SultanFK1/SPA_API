@@ -65,6 +65,15 @@ public class StudentService {
 
     }
 
+    public boolean hasGraduated(int id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        return student.isHasGraduated();
+    }
+
+
+
+
+
 
 
 

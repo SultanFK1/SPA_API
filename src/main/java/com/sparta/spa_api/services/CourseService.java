@@ -75,11 +75,11 @@ public class CourseService {
         return courseMapper.toDTO(saved);
     }
 
-    public List<CourseDTO> searchCoursesByName(String name) {
-        return courseRepository.findByCourse_nameContainingIgnoreCase(name)
-                .stream()
-                .map(courseMapper::toDTO)
-                .collect(Collectors.toList());
-    }
+//    public List<CourseDTO> searchCoursesByName(String name) {
+//        return courseRepository.findByCourse_nameContainingIgnoreCase(name)
+//                .stream()
+//                .map(courseMapper::toDTO)
+//                .collect(Collectors.toList());
+//    }
 
 }

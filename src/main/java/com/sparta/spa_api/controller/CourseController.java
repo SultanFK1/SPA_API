@@ -65,13 +65,13 @@ public class CourseController {
         service.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }
-
-    @Operation(summary = "Search courses by name")
-    @GetMapping("/search")
-    public ResponseEntity<List<CourseDTO>> searchCourses(
-            @RequestParam String name) {
-        return ResponseEntity.ok(service.searchCoursesByName(name));
-    }
-
+//
+//    @Operation(summary = "Search courses by name")
+//    @GetMapping("/search")
+//    public ResponseEntity<List<CourseDTO>> searchCourses(
+//            @RequestParam String name) {
+//        return ResponseEntity.ok(service.searchCoursesByName(name));
+//    }
+//
 
 }

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @RepositoryRestResource(exported = false)
 
 public interface StudentRepository extends JpaRepository<Student,Integer> {
+
 }

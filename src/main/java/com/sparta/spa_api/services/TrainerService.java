@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TrainerService {
@@ -36,18 +37,27 @@ public class TrainerService {
         }
     }
 
+    public TrainersDTO getTrainer(int id) {
+        Trainers trainer = trainersRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No Trainer with id: " + id));
+
+        return trainersMapper.toDTO(trainer);
+    }
+
     /*
         @3.1
         Retrieves the trainers Course and returns the course_id/course object
      */
-    public CourseDTO getCourse(TrainersDTO trainerDTO) {
-        Trainers entity = trainersMapper.toEntity(trainerDTO);
-        Course course = entity.getCourse();
+    public CourseDTO getCourse(Integer Id) {
+        Trainers trainer = trainersRepository.findById(Id)
+                .orElseThrow(() -> new NoSuchElementException("No Trainer with id: " + Id));
 
+        Course course = trainer.getCourse();
         if(!trainersRepository.existsById(course.getId())) {
             throw new NoSuchElementException("Course with id " + course.getId() + " does not exist");
+        } else {
+            return courseMapper.toDTO(course);
         }
-        return courseMapper.toDTO(course);
     }
 
     /*
@@ -61,12 +71,12 @@ public class TrainerService {
         Course course = entity.getCourse();
 
         ArrayList<StudentDTO> studentArray = new ArrayList<>();
-         List<Student> myStudents = course.getStudents();
+        List<Student> myStudents = course.getStudents();
 
-         for(Student student : myStudents) {
-             StudentDTO studentDTO = studentMapper.toDTO(student);
-             studentArray.add(studentDTO);
-         }
+        for(Student student : myStudents) {
+            StudentDTO studentDTO = studentMapper.toDTO(student);
+            studentArray.add(studentDTO);
+        }
 
         return studentArray;
     }
@@ -86,11 +96,12 @@ public class TrainerService {
         @3.3.1
         Sets the Trainer's name and returns the Trainer.
      */
-    public TrainersDTO setTrainerName(TrainersDTO trainer, String newName) {
+    public TrainersDTO setTrainerName(int id, String newName) {
+        Trainers trainer = trainersRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No Trainer with id: " + id));
         trainer.setTrainer_name(newName);
-        Trainers entity = trainersMapper.toEntity(trainer);
-        trainersRepository.save(entity);
-        return trainersMapper.toDTO(entity);
+        System.out.println("BIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIG CASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSH");
+        return trainersMapper.toDTO(trainer);
     }
 
     /*
@@ -118,6 +129,13 @@ public class TrainerService {
         }
 
         return courseMapper.toDTO(course);
+    }
+
+    public void deleteTrainer(int id) {
+        if (!trainersRepository.existsById(id)) {
+            throw new NoSuchElementException("Trainer not found");
+        }
+        trainersRepository.deleteById(id);
     }
 
 

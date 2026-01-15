@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequestMapping("/trainers")
 public class TrainersController {
 
     private final TrainerService service;
@@ -25,46 +26,68 @@ public class TrainersController {
         this.service = service;
     }
 
-    @Operation(summary = "Get course", description = "Retrieve the trainer's course.")
-    @GetMapping(value = "/trainers/{trainers}/courses")
-    //It is supposed to be "trainers/{id}/courses" but trainers don't have an ID.
-    public ResponseEntity<CourseDTO> getTraineresCourse(@PathVariable TrainersDTO trainer) {
-        CourseDTO Course = service.getCourse(trainer);
+    @Operation(summary = "Get Trainers by ID", description = "Retrieve the trainer.")
+    @GetMapping("/{id}")
+    public ResponseEntity<TrainersDTO> getTrainer(@PathVariable int id) {
+        TrainersDTO trainer = service.getTrainer(id);
 
-        if(Course != null || trainer != null) {
+        if(trainer != null) {
+            return ResponseEntity.status(200).body(trainer);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Get Trainers Course ID", description = "Retrieve the trainer's course.")
+    @GetMapping("/{id}/courses/")
+    public ResponseEntity<CourseDTO> getTraineresCourse(@PathVariable int id) {
+        CourseDTO Course = service.getCourse(id);
+
+        if(Course != null) {
             return ResponseEntity.status(201).body(Course);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @Operation(summary = "Update my course name", description = "Retrieve the trainer's course and update's the name")
-    @GetMapping(value = "/trainers/{trainers}/courses/setCourse")
-    public ResponseEntity<CourseDTO> updateCourseName(@RequestBody TrainersDTO trainerDTO,@PathVariable String newCourseName) {
-        //Course courseDTO = trainerDTO.getCourse_id();
-        //courseDTO.setCourse_name(newCourseName);
+    //Works
+    @Operation(summary = "Delete Trainers by ID", description = "Delete a trainer by ID")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CourseDTO> deleteTrainerById(@PathVariable int id) {
         try {
-             CourseDTO updatedCourse = service.setCourse_name(trainerDTO, newCourseName);
-             return ResponseEntity.status(201).body(updatedCourse);
+            service.deleteTrainer(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Update my course name", description = "Retrieve the trainer's course and update's the name")
+    @PostMapping("{id}/courses/setCourseName")
+    public ResponseEntity<CourseDTO> updateCourseName(@PathVariable int id, @RequestBody String newCourseName) {
+        CourseDTO Course = service.getCourse(id);
+
+        try {
+            Course.setCourse_name(newCourseName);
+            return ResponseEntity.status(201).body(Course);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @Operation(summary = "Update my trainer name", description = "Update's the trainers name.")
-    @GetMapping(value = "/trainers/{name}")
-    public ResponseEntity<TrainersDTO> updateTrainerName(@RequestBody TrainersDTO trainerDTO, @PathVariable String newTrainerName) {
+    @PostMapping( "/name/{id}")
+    public ResponseEntity<TrainersDTO> updateTrainerName(@PathVariable int id, @RequestBody String newTrainerName) {
         try {
-            TrainersDTO updatedTrainer = service.setTrainerName(trainerDTO, newTrainerName);
-            return ResponseEntity.status(201).body(updatedTrainer);
-
+            TrainersDTO trainer = service.setTrainerName(id, newTrainerName);
+            return ResponseEntity.status(201).body(trainer);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @Operation(summary = "Update my trainer id", description = "Update's the trainers id.")
-    @GetMapping(value = "/trainers/{id}")
+    @PostMapping( "/{id}")
     public ResponseEntity<TrainersDTO> updateTrainerId(@RequestBody TrainersDTO trainerDTO, @PathVariable Integer newID) {
         try {
             TrainersDTO updatedTrainer = service.setTrainerId(trainerDTO, newID);
@@ -76,4 +99,3 @@ public class TrainersController {
     }
 
 }
-

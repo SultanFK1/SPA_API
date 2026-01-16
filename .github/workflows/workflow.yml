@@ -30,7 +30,6 @@ jobs:
       - name: Build project and run unit tests
         id: tests
         run: mvn clean test -Dtest=HelperClassTest -DforkCount=1 -B
-        working-directory: ${{ github.workspace }}/Web_Testing_Framework
 
       - name: Archive test results
         if: always()

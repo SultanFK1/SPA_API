@@ -57,7 +57,7 @@ public class StudentController {
     }
 
     @Operation(summary = "Get all Students", description = "Retrieve a list of all students")
-    @GetMapping(value = "/")
+    @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> students = service.getAllStudents();
         return ResponseEntity.ok(students);

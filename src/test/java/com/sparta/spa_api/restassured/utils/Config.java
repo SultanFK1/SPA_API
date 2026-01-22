@@ -21,7 +21,7 @@ public class Config {
         return properties.getProperty("spa_api.base_uri");
     }
 //PATHS
-    public static String getCoursesBase() {
+    public static String getAllCourses() {
         return properties.getProperty("spa_api.courses.base");
     }
 
@@ -33,7 +33,7 @@ public class Config {
         return properties.getProperty("spa_api.courses.search");
     }
 
-    public static String getTrainersBase() {
+    public static String getAllTrainers() {
         return properties.getProperty("spa_api.trainers.base");
     }
 
@@ -53,7 +53,7 @@ public class Config {
         return properties.getProperty("spa_api.trainers.courses_by_trainer");
     }
 
-    public static String getStudentsBase() {
+    public static String getAllStudents() {
         return properties.getProperty("spa_api.students.base");
     }
 

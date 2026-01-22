@@ -33,5 +33,4 @@ public class SpaApiApplication {
             System.out.println(trainer);
         }
     }
-
 }

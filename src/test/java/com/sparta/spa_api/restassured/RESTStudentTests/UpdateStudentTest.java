@@ -1,17 +1,18 @@
-package com.sparta.spa_api.restassured;
+package com.sparta.spa_api.restassured.RESTStudentTests;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
 
-public class CreateCourseTest {
+public class UpdateStudentTest {
 
     @Test
-    void createCourse_shouldReturn201() {
+    void updateStudent_shouldReturn200() {
+
         String body = """
                 {
-                  "courseName": "NewCourse88"
+                  "student_name": "AnythingHere"
                 }
                 """;
 
@@ -22,11 +23,11 @@ public class CreateCourseTest {
                 .header("Content-Type", "application/json")
                 .body(body)
                 .when()
-                .post("/courses")
+                .put("/student/1")
                 .then()
-                .log().all()
-                .statusCode(anyOf(is(200), is(201)))
-                .body("id", greaterThan(0))
-                .body("courseName", equalTo("NewCourse88"));
+                .statusCode(200)
+                .body("id", equalTo(1));   // safest assertion
     }
 }
+
+// 500 status api code was given not 200 hence why this will fall

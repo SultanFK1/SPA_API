@@ -1,4 +1,4 @@
-package com.sparta.spa_api.restassured;
+package com.sparta.spa_api.restassured.RESTCourseTests;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;

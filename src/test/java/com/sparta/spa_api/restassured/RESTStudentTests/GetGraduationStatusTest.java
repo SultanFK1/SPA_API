@@ -1,21 +1,19 @@
-package com.sparta.spa_api.restassured;
+package com.sparta.spa_api.restassured.RESTStudentTests;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.*;
-
-public class DeleteCourseTest {
+public class GetGraduationStatusTest {
 
     @Test
-    void deleteCourse_shouldReturn204() {
+    void getGraduationStatus_shouldReturn200() {
         RestAssured
                 .given()
                 .baseUri("http://localhost")
                 .port(8091)
                 .when()
-                .delete("/courses/1")
+                .get("/student/1/graduated")
                 .then()
-                .statusCode(anyOf(is(200), is(204)));
+                .statusCode(200);
     }
 }

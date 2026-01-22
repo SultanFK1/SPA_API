@@ -1,7 +1,6 @@
 package com.sparta.spa_api.restassured.utils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
@@ -9,18 +8,25 @@ public class Config {
     private static final Properties properties = new Properties();
 
     static {
-        try {
-            FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
-            properties.load(fis);
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to load config.properties");
+        try (InputStream is = Config.class
+                .getClassLoader()
+                .getResourceAsStream("config.properties")) {
+
+            if (is == null) {
+                throw new RuntimeException("config.properties not found on classpath");
+            }
+
+            properties.load(is);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to load config.properties", e);
         }
     }
 
     public static String getBaseUri() {
         return properties.getProperty("spa_api.base_uri");
     }
-//PATHS
+
     public static String getAllCourses() {
         return properties.getProperty("spa_api.courses.base");
     }
